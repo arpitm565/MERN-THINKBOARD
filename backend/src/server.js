@@ -1,30 +1,47 @@
-import "dotenv/config";
 import express from "express";
-import cors from "cors"
+import cors from "cors";
+import "dotenv/config";
+import path from "path";
 
-import notesRoute from "./routes/notesRoutes.js";
+import notesRoutes from "./routes/notesRoutes.js";
 import { connectDB } from "./config/db.js";
 import rateLimiter from "./middleware/rateLimiter.js";
 
+// dotenv.config();
+// console.log(process.env.UPSTASH_REDIS_REST_URL);
+// console.log(process.env.UPSTASH_REDIS_REST_TOKEN ? "TOKEN FOUND" : "TOKEN MISSING");
+
 const app = express();
 const PORT = process.env.PORT || 5001;
+const __dirname = path.resolve();
 
-//middleware
-app.use(cors({
-  origin: "http://localhost:5173",
-}))
+// Middleware
+if (process.env.NODE_ENV !== "production") {
+  app.use(
+    cors({
+      origin: "http://localhost:5173",
+    })
+  );
+}
+
 app.use(express.json());
 app.use(rateLimiter);
 
-app.use((req, res, next) => {
-  console.log(`req method is ${req.method} and req URL is ${req.url}`);
-  next();
-});
+// Routes
+app.use("/api/notes", notesRoutes);
 
-app.use("/api/notes", notesRoute);
+// Serve frontend in production
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
+  app.get("/{*splat}", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+  });
+}
+
+// Start server
 connectDB().then(() => {
   app.listen(PORT, () => {
-    console.log("Server Started ON PORT:", PORT);
+    console.log("Server started on PORT:", PORT);
   });
 });
