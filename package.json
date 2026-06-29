@@ -1,7 +1,33 @@
 {
+  "name": "mern_thinkboard",
+  "version": "1.0.0",
+  "main": "index.js",
   "dependencies": {
+    "cookie": "^1.1.1",
+    "csstype": "^3.2.3",
     "dotenv": "^17.4.2",
+    "goober": "^2.1.19",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
     "react-hot-toast": "^2.6.0",
-    "react-router": "^7.18.0"
-  }
+    "react-router": "^7.18.0",
+    "scheduler": "^0.27.0",
+    "set-cookie-parser": "^2.7.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "npm install --prefix backend && npm install --prefix frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arpitm565/MERN-THINKBOARD.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arpitm565/MERN-THINKBOARD/issues"
+  },
+  "homepage": "https://github.com/arpitm565/MERN-THINKBOARD#readme",
+  "description": ""
 }
